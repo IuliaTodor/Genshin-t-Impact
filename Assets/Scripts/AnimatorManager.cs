@@ -7,6 +7,7 @@ public class AnimatorManager : MonoBehaviour
     Animator animator;
     int x;
     int y;
+    float dead;
 
     private void Awake()
     {
@@ -14,6 +15,7 @@ public class AnimatorManager : MonoBehaviour
         x = Animator.StringToHash("X");
         y = Animator.StringToHash("Y");
     }
+
     public void UpdateAnimatorValues(float horizontalMovement, float verticalMovement)
     {
         float snappedHorizontal = 0;
@@ -24,7 +26,11 @@ public class AnimatorManager : MonoBehaviour
        
         animator.SetFloat(x, snappedHorizontal, 0.1f, Time.deltaTime);
         animator.SetFloat(y, snappedVertical, 0.1f, Time.deltaTime);
-        
+    }
+
+    public void HandleDeathAnimation()
+    {
+        animator.SetBool("IsDead", true);
     }
 
     private float SetSnap(float snap, float movement)

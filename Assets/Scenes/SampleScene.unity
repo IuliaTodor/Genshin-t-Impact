@@ -137,7 +137,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b4a89927916a93947995ba3a10ecb980, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.43
+      value: -1.55
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b4a89927916a93947995ba3a10ecb980, type: 3}
       propertyPath: m_LocalPosition.z
@@ -180,6 +180,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 9100000, guid: a679e97a1a3aff946ade24b09c0f9c3d, type: 2}
     - target: {fileID: 5866666021909216657, guid: b4a89927916a93947995ba3a10ecb980, type: 3}
+      propertyPath: m_WarningMessage
+      value: "\nBinding warning: Some generic clip(s) animate transforms that are
+        already bound by a Humanoid avatar. These transforms can only be changed
+        by Humanoid clips.\n\tTransform 'mixamorig:Hips'\n\tTransform 'mixamorig:LeftFoot'\n\tTransform
+        'mixamorig:LeftHandThumb2'\n\tTransform 'mixamorig:LeftHandIndex1'\n\tTransform
+        'mixamorig:RightHandRing2'\n\tTransform 'mixamorig:Spine1'\n\tTransform 'mixamorig:LeftToeBase'\n\tTransform
+        'mixamorig:LeftHandThumb3'\n\tTransform 'mixamorig:RightArm'\n\tTransform
+        'mixamorig:LeftLeg'\n\tand more ...\n\tFrom animation clip 'Die'"
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: b4a89927916a93947995ba3a10ecb980, type: 3}
       propertyPath: m_ApplyRootMotion
       value: 0
       objectReference: {fileID: 0}
@@ -198,13 +208,13 @@ PrefabInstance:
       addedObject: {fileID: 2018125031}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b4a89927916a93947995ba3a10ecb980, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2018125030}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b4a89927916a93947995ba3a10ecb980, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 2018125032}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b4a89927916a93947995ba3a10ecb980, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2018125034}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b4a89927916a93947995ba3a10ecb980, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2018125036}
   m_SourcePrefab: {fileID: 100100000, guid: b4a89927916a93947995ba3a10ecb980, type: 3}
 --- !u!1 &459646303
 GameObject:
@@ -232,7 +242,7 @@ Transform:
   m_GameObject: {fileID: 459646303}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.023229241, y: 0.65861225, z: 4.3986416}
+  m_LocalPosition: {x: -0.023229241, y: 1.507, z: 4.3986416}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -448,7 +458,7 @@ Transform:
   m_GameObject: {fileID: 890734502}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.0242748, y: 0.10770416, z: 1.0327988}
+  m_LocalPosition: {x: -1.0242748, y: -0.02, z: 1.94}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -540,7 +550,7 @@ Transform:
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
   m_LocalRotation: {x: -0.034282397, y: 0.9614526, z: -0.14119133, w: -0.2334497}
-  m_LocalPosition: {x: 1.1413112, y: 1.2854239, z: 5.8287535}
+  m_LocalPosition: {x: 1.974, y: 1.83, z: 7.442}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -582,29 +592,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68dc315a9a8b17f458429b064c0c2743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!136 &2018125030
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2018125025}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.26138306
-  m_Height: 1.5909379
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.4459566, z: -0.23861694}
 --- !u!54 &2018125031
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -659,6 +646,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73965b63fa24ba84c9fb850cf71dd32e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &2018125036
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2018125025}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1.219457, z: 0.50039124}
+  m_Center: {x: 0, y: 0.61724764, z: -0.032702565}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
