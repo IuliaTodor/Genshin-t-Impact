@@ -1,26 +1,50 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO.IsolatedStorage;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class PlayerLocalMotion : MonoBehaviour
 {
+    PlayerManager playerManager;
     InputManager inputManager;
     Vector3 moveDirection;
     Transform cameraObject;
     Rigidbody rigidBody;
+    AnimatorManager animatorManager;
 
-    public float movementSpeed = 6;
+    public float inAirTimer;
+    public float leapingVelocity;
+    public float fallingVelocity;
+    public float rayCastHeightOffset = 0.5f;
+    public LayerMask groundLayer;
+
+
+    public float walkingSpeed = 1.5f;
+    public float runningSpeed = 3f;
+    public float sprintingSpeed = 7f;
     public float rotationSpeed = 15;
+
+    public bool isGrounded;
+    public bool isSprinting;
 
     private void Awake()
     {
         inputManager = GetComponent<InputManager>();
         rigidBody = GetComponent<Rigidbody>();
         cameraObject = Camera.main.transform;
+        playerManager = GetComponent<PlayerManager>();
+        animatorManager = GetComponent<AnimatorManager>();
     }
 
     public void HandleAllMovement()
     {
+        HandleFallingAndLanding();
+
+        if(playerManager.isInteracting)
+        {
+            return;
+        }
         HandleMovement();
         HandleRotation();
     }
@@ -30,7 +54,27 @@ public class PlayerLocalMotion : MonoBehaviour
 
         moveDirection = DirectionVector(moveDirection);
 
-        moveDirection *= movementSpeed;
+        if (isSprinting)
+        {
+            moveDirection = moveDirection.normalized * sprintingSpeed;
+        }
+
+        else
+        {
+            if (inputManager.moveAmount >= 0.5f)
+            {
+                moveDirection = moveDirection.normalized * runningSpeed;
+            }
+
+            else
+            {
+                moveDirection = moveDirection.normalized * walkingSpeed;
+            }
+        }
+
+
+        //Si corremos, usamos sprintingSpeed. Si corremos, usamos runningSpeed. Si caminamos, usamos WalkingSpeed.
+        moveDirection *= runningSpeed;
         rigidBody.velocity = moveDirection;
     }
 
@@ -72,4 +116,43 @@ public class PlayerLocalMotion : MonoBehaviour
 
         return target;
     }
+    
+    private void HandleFallingAndLanding()
+    {
+        RaycastHit hit;
+        Vector3 raycastOrigin = transform.position;
+        raycastOrigin.y = raycastOrigin.y + rayCastHeightOffset;
+
+        if(!isGrounded)
+        {
+            if(playerManager.isInteracting)
+            {
+                Debug.Log("lol");
+                animatorManager.PlayTargetAnimation("Falling", true);
+            }
+
+            inAirTimer = inAirTimer + Time.deltaTime;
+            rigidBody.AddForce(transform.forward * leapingVelocity);
+            rigidBody.AddForce(-Vector3.up * fallingVelocity * inAirTimer);
+        }
+
+        if (Physics.SphereCast(raycastOrigin, 0.2f, -Vector3.up, out hit, groundLayer))
+        {
+            if(!isGrounded && playerManager.isInteracting)
+            {
+                Debug.Log("XD");
+                animatorManager.PlayTargetAnimation("Idle", true);
+            }
+
+            inAirTimer = 0;
+            isGrounded = true;
+        }
+
+        else
+        {
+            isGrounded = false;
+        }
+
+    }
+
 }
