@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 1e1451b3f921548488e76e2107f03634
+guid: 907734c0370079645904959317369a41
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -33,11 +33,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: CrouchAim
+      name: Dance
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 0
-      lastFrame: 51
+      lastFrame: 505
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
