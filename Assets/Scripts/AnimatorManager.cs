@@ -57,18 +57,13 @@ public class AnimatorManager : MonoBehaviour
     {
         if(cameraManager != null)
         {
-            Debug.Log("camera no es null");
-
             if (inputManager.aimInput && cameraManager.isThirdPerson)
             {
-                Debug.Log("camara");
                 animator.SetBool("isAiming", true);
             }
 
             else if (!cameraManager.isThirdPerson)
             {
-
-                Debug.Log("no camara");
                 animator.SetBool("isAiming", false);
             }
         }

@@ -51,7 +51,7 @@ public class CameraManager : MonoBehaviour
 
     public GameObject thirdPersonCamera;
     public GameObject firstPersonCamera;
-
+    private Coroutine corroutine = null;
     private void Awake()
     {
         target = FindObjectOfType<PlayerManager>().transform;
@@ -111,15 +111,17 @@ public class CameraManager : MonoBehaviour
     }
     private void ChangeCameraMode()
     {
-        if (inputManager.aimInput)
+        if (inputManager.aimInput && corroutine == null)
         {
-            StartCoroutine(ChangeCamera());
+            corroutine = StartCoroutine(ChangeCamera());
         }
 
     }
 
     private IEnumerator ChangeCamera()
     {
+        Debug.Log("corutina");
+
         if (isThirdPerson == true)
         {
             //firstPersonPosition = thirdPersonPosition + zoom;
@@ -139,9 +141,12 @@ public class CameraManager : MonoBehaviour
             thirdPersonCamera.SetActive(true);
 
         }
-        isThirdPerson = !isThirdPerson;
 
         yield return new WaitForSeconds(0.5f);
+
+
+        isThirdPerson = !isThirdPerson;
+        corroutine = null;
     }
 
     /// <summary>
