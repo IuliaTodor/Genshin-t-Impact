@@ -1,30 +1,65 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
+using Unity.VisualScripting;
 
 public class PlayerManager : MonoBehaviour
 {
     InputManager inputManager;
-    CameraManager cameraManager;
+    RotateCamera rotateCamera;
     PlayerLocalMotion playerLocalMotion;
     Animator animator;
     AnimatorManager animManager;
 
+    [SerializeField] public CinemachineVirtualCamera thirdPersonCam;
+    [SerializeField] public CinemachineVirtualCamera firstPersonCam;
+
     public bool isInteracting;
     private void Awake()
     {
-        cameraManager = FindObjectOfType<CameraManager>() ;
+        rotateCamera = FindObjectOfType<RotateCamera>() ;
         inputManager = GetComponent<InputManager>();
         playerLocalMotion = GetComponent<PlayerLocalMotion>();
         animManager = GetComponent<AnimatorManager>();
         animator = GetComponent<Animator>();
     }
 
+    private void OnEnable()
+    {
+        CameraSwitch.Register(thirdPersonCam);
+        CameraSwitch.Register(firstPersonCam);   
+        CameraSwitch.SwitchCamera(thirdPersonCam);
+        Debug.Log("ActiveCamera" + CameraSwitch.activeCamera);
+    }
+
+    private void OnDisable()
+    {
+        CameraSwitch.Unregister(thirdPersonCam);
+        CameraSwitch.Unregister(firstPersonCam);
+     
+  
+    }
+
     private void Update()
     {
         inputManager.HandleInputs();
         animManager.HandleDeathAnimation();
-        animManager.HandleAimAnimation();
+        StartCoroutine(animManager.HandleAimAnimation());
+        animManager.HandleFallingAnimation();
+
+        if(inputManager.changeCameraInput)
+        {
+            if(CameraSwitch.IsActiveCamera(thirdPersonCam)) 
+            {
+                CameraSwitch.SwitchCamera(firstPersonCam);
+            }
+
+            else if (CameraSwitch.IsActiveCamera(firstPersonCam))
+            {
+                CameraSwitch.SwitchCamera(thirdPersonCam);
+            }
+        }
     }
 
     //FixedUpdate funciona mejor con Rigidbody
@@ -35,8 +70,6 @@ public class PlayerManager : MonoBehaviour
 
     private void LateUpdate()
     {
-        cameraManager.HandleCameraMovement();
-
         isInteracting = animator.GetBool("isInteracting");
     }
 }

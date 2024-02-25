@@ -8,6 +8,7 @@ public class InputManager : MonoBehaviour
     PlayerLocalMotion motion;
     AnimatorManager animatorManager;
     CameraManager cameraManager;
+    RotateCamera rotateCamera;
     
 
     public Vector2 movementInput;
@@ -21,7 +22,7 @@ public class InputManager : MonoBehaviour
     public float horizontalInput;
 
     public bool spaceInput;
-    public bool aimInput;
+    public bool changeCameraInput;
 
 
     private void Awake()
@@ -29,6 +30,7 @@ public class InputManager : MonoBehaviour
         animatorManager = GetComponent<AnimatorManager>();
         motion = GetComponent<PlayerLocalMotion>();
         cameraManager = GetComponent<CameraManager>();
+        rotateCamera = FindObjectOfType<RotateCamera>();
     }
 
     private void OnEnable()
@@ -40,13 +42,17 @@ public class InputManager : MonoBehaviour
             //Cuando pulsamos ASDW o movemos el joystick, grabamos el movimiento en la variable movementInput.
             playerControls.PlayerMovement.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
            
-            playerControls.PlayerMovement.Camera.performed += i => cameraInput = i.ReadValue<Vector2>();
+            playerControls.PlayerMovement.Camera.performed += _ => { StartCoroutine(rotateCamera.Rotate()); };
+            playerControls.PlayerMovement.Camera.canceled += _ => rotateCamera.canRotate = false;
+
+            playerControls.PlayerMovement.CameraAxis.performed += touchVector => { rotateCamera.rotation = touchVector.ReadValue<Vector2>(); };
+
 
             playerControls.PlayerActions.Sprint.performed += i => spaceInput = true;
             playerControls.PlayerActions.Sprint.canceled += i => spaceInput = false;
 
-            playerControls.PlayerActions.Aim.performed += i => aimInput = true;
-            playerControls.PlayerActions.Aim.canceled += i => aimInput = false;
+            playerControls.PlayerActions.CameraMode.performed += i => changeCameraInput = true;
+            playerControls.PlayerActions.CameraMode.canceled += i => changeCameraInput = false;
 
             Debug.Log(playerControls.PlayerMovement.Camera);
         }

@@ -8,6 +8,8 @@ public class AnimatorManager : MonoBehaviour
     Animator animator;
     InputManager inputManager;
     CameraManager cameraManager;
+    PlayerManager playerManager;
+    PlayerLocalMotion localMotion;
     int x;
     int y;
     private void Awake()
@@ -15,7 +17,8 @@ public class AnimatorManager : MonoBehaviour
         animator = GetComponent<Animator>();
         inputManager = GetComponent<InputManager>();
         cameraManager = FindObjectOfType<CameraManager>();
-        Debug.Log(cameraManager.IsUnityNull());
+        playerManager = FindObjectOfType<PlayerManager>();
+        localMotion = FindObjectOfType<PlayerLocalMotion>();
         x = Animator.StringToHash("X");
         y = Animator.StringToHash("Y");
     }
@@ -53,26 +56,32 @@ public class AnimatorManager : MonoBehaviour
      
     }
 
-    public void HandleAimAnimation()
+    public void HandleFallingAnimation()
     {
-        if(cameraManager != null)
+        if(!localMotion.isGrounded)
         {
-            Debug.Log("camera no es null");
+            animator.SetBool("IsFalling", true);
+        }
 
-            if (inputManager.aimInput && cameraManager.isThirdPerson)
+        else if(localMotion.isGrounded) 
+        {
+            animator.SetBool("IsFalling", false);
+        }
+    }
+
+    public IEnumerator HandleAimAnimation()
+    {
+            if (CameraSwitch.IsActiveCamera(playerManager.firstPersonCam))
             {
-                Debug.Log("camara");
                 animator.SetBool("isAiming", true);
             }
 
-            else if (!cameraManager.isThirdPerson)
+            else if (CameraSwitch.IsActiveCamera(playerManager.thirdPersonCam))
             {
-
-                Debug.Log("no camara");
                 animator.SetBool("isAiming", false);
             }
-        }
 
+        yield return null;
     }
 
     public void PlayTargetAnimation(string targetAnimation, bool isInteracting)

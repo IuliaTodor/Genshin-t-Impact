@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 public class CameraManager : MonoBehaviour
 {
     InputManager inputManager;
@@ -49,8 +50,7 @@ public class CameraManager : MonoBehaviour
     public Transform cameraManager;
     public Transform playerContainer;
 
-    public GameObject thirdPersonCamera;
-    public GameObject firstPersonCamera;
+    private Coroutine corroutine = null;
 
     private void Awake()
     {
@@ -68,9 +68,9 @@ public class CameraManager : MonoBehaviour
 
     public void HandleCameraMovement()
     {
-        FollowTarget();
+        //FollowTarget();
         RotateCamera();
-        ChangeCameraMode();
+        //ChangeCameraMode();
         //HandleCameraColisions();
     }
 
@@ -111,22 +111,22 @@ public class CameraManager : MonoBehaviour
     }
     private void ChangeCameraMode()
     {
-        if (inputManager.aimInput)
+        if (inputManager.changeCameraInput && corroutine == null)
         {
-            StartCoroutine(ChangeCamera());
+            corroutine = StartCoroutine(ChangeCamera());
         }
 
     }
 
     private IEnumerator ChangeCamera()
     {
+        Debug.Log("corutina");
+
         if (isThirdPerson == true)
         {
             //firstPersonPosition = thirdPersonPosition + zoom;
             //cameraPivot.transform.position = new Vector3(cameraPivot.transform.position.x, cameraPivot.transform.position.y, firstPersonPosition);
             cameraManager.SetParent(playerContainer);
-            thirdPersonCamera.SetActive(false);
-            firstPersonCamera.SetActive(true);
         }
 
         else
@@ -135,13 +135,13 @@ public class CameraManager : MonoBehaviour
             //    cameraPivot.transform.position = new Vector3(cameraPivot.transform.position.x, cameraPivot.transform.position.y, thirdPersonPosition);
             //}
             cameraManager.SetParent(null);
-            firstPersonCamera.SetActive(false);
-            thirdPersonCamera.SetActive(true);
-
         }
-        isThirdPerson = !isThirdPerson;
 
         yield return new WaitForSeconds(0.5f);
+
+
+        isThirdPerson = !isThirdPerson;
+        corroutine = null;
     }
 
     /// <summary>
