@@ -8,6 +8,7 @@ public class AnimatorManager : MonoBehaviour
     Animator animator;
     InputManager inputManager;
     CameraManager cameraManager;
+    PlayerManager playerManager;
     int x;
     int y;
     private void Awake()
@@ -15,6 +16,7 @@ public class AnimatorManager : MonoBehaviour
         animator = GetComponent<Animator>();
         inputManager = GetComponent<InputManager>();
         cameraManager = FindObjectOfType<CameraManager>();
+        playerManager = FindObjectOfType<PlayerManager>();
         Debug.Log(cameraManager.IsUnityNull());
         x = Animator.StringToHash("X");
         y = Animator.StringToHash("Y");
@@ -57,12 +59,12 @@ public class AnimatorManager : MonoBehaviour
     {
         if(cameraManager != null)
         {
-            if (inputManager.aimInput && cameraManager.isThirdPerson)
+            if (inputManager.aimInput && CameraSwitch.IsActiveCamera(playerManager.firstPersonCam))
             {
                 animator.SetBool("isAiming", true);
             }
 
-            else if (!cameraManager.isThirdPerson)
+            else if (CameraSwitch.IsActiveCamera(playerManager.thirdPersonCam))
             {
                 animator.SetBool("isAiming", false);
             }

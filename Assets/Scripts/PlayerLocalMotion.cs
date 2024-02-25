@@ -23,7 +23,7 @@ public class PlayerLocalMotion : MonoBehaviour
     public float walkingSpeed = 1.5f;
     public float runningSpeed = 3f;
     public float sprintingSpeed = 7f;
-    public float rotationSpeed = 15;
+    public float rotationSpeed = 2;
 
     public bool isGrounded;
     public bool isSprinting;
@@ -127,7 +127,6 @@ public class PlayerLocalMotion : MonoBehaviour
         {
             if(playerManager.isInteracting)
             {
-                Debug.Log("lol");
                 animatorManager.PlayTargetAnimation("Falling", true);
             }
 
