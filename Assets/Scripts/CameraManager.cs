@@ -111,7 +111,7 @@ public class CameraManager : MonoBehaviour
     }
     private void ChangeCameraMode()
     {
-        if (inputManager.aimInput && corroutine == null)
+        if (inputManager.changeCameraInput && corroutine == null)
         {
             corroutine = StartCoroutine(ChangeCamera());
         }

@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using Unity.VisualScripting;
 
 public class PlayerManager : MonoBehaviour
 {
     InputManager inputManager;
-    CameraManager cameraManager;
+    RotateCamera rotateCamera;
     PlayerLocalMotion playerLocalMotion;
     Animator animator;
     AnimatorManager animManager;
@@ -17,7 +18,7 @@ public class PlayerManager : MonoBehaviour
     public bool isInteracting;
     private void Awake()
     {
-        cameraManager = FindObjectOfType<CameraManager>() ;
+        rotateCamera = FindObjectOfType<RotateCamera>() ;
         inputManager = GetComponent<InputManager>();
         playerLocalMotion = GetComponent<PlayerLocalMotion>();
         animManager = GetComponent<AnimatorManager>();
@@ -44,9 +45,10 @@ public class PlayerManager : MonoBehaviour
     {
         inputManager.HandleInputs();
         animManager.HandleDeathAnimation();
-        animManager.HandleAimAnimation();
+        StartCoroutine(animManager.HandleAimAnimation());
+        animManager.HandleFallingAnimation();
 
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(inputManager.changeCameraInput)
         {
             if(CameraSwitch.IsActiveCamera(thirdPersonCam)) 
             {
@@ -68,12 +70,6 @@ public class PlayerManager : MonoBehaviour
 
     private void LateUpdate()
     {
-        if(cameraManager != null)
-        {
-
-            cameraManager.HandleCameraMovement();
-        }
-
         isInteracting = animator.GetBool("isInteracting");
     }
 }

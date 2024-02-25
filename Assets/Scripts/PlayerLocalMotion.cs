@@ -6,45 +6,46 @@ using UnityEngine;
 
 public class PlayerLocalMotion : MonoBehaviour
 {
-    PlayerManager playerManager;
-    InputManager inputManager;
     Vector3 moveDirection;
+
+    InputManager inputManager;
+    AnimatorManager animManager;
     Transform cameraObject;
     Rigidbody rigidBody;
-    AnimatorManager animatorManager;
 
-    public float inAirTimer;
-    public float leapingVelocity;
-    public float fallingVelocity;
-    public float rayCastHeightOffset = 0.5f;
-    public LayerMask groundLayer;
+    [Header("Ground Check")]
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private float groundRadius;
+    [SerializeField] private LayerMask whatIsGround;
+    [SerializeField] public bool isGrounded;
 
-
+    [Header("Movement")]
     public float walkingSpeed = 1.5f;
     public float runningSpeed = 3f;
     public float sprintingSpeed = 7f;
-    public float rotationSpeed = 2;
-
-    public bool isGrounded;
     public bool isSprinting;
+
+    [Header("Rotation")]
+    public float rotationSpeed = 2;
 
     private void Awake()
     {
         inputManager = GetComponent<InputManager>();
         rigidBody = GetComponent<Rigidbody>();
         cameraObject = Camera.main.transform;
-        playerManager = GetComponent<PlayerManager>();
-        animatorManager = GetComponent<AnimatorManager>();
+        animManager = GetComponent<AnimatorManager>();
     }
+
+    private void Update()
+    {
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundRadius, (int)whatIsGround);
+
+        Debug.Log(isGrounded);
+    }
+
 
     public void HandleAllMovement()
     {
-        HandleFallingAndLanding();
-
-        if(playerManager.isInteracting)
-        {
-            return;
-        }
         HandleMovement();
         HandleRotation();
     }
@@ -104,6 +105,8 @@ public class PlayerLocalMotion : MonoBehaviour
     /// </summary>
     /// <param name="target"></param>
     /// <returns></returns>
+    /// 
+
     private Vector3 DirectionVector(Vector3 target)
     {
         //La dirección de la cámera en el eje z (hacia la que está mirando) multiplicado por cuanto nos movemos en y
@@ -116,42 +119,4 @@ public class PlayerLocalMotion : MonoBehaviour
 
         return target;
     }
-    
-    private void HandleFallingAndLanding()
-    {
-        RaycastHit hit;
-        Vector3 raycastOrigin = transform.position;
-        raycastOrigin.y = raycastOrigin.y + rayCastHeightOffset;
-
-        if(!isGrounded)
-        {
-            if(playerManager.isInteracting)
-            {
-                animatorManager.PlayTargetAnimation("Falling", true);
-            }
-
-            inAirTimer = inAirTimer + Time.deltaTime;
-            rigidBody.AddForce(transform.forward * leapingVelocity);
-            rigidBody.AddForce(-Vector3.up * fallingVelocity * inAirTimer);
-        }
-
-        if (Physics.SphereCast(raycastOrigin, 0.2f, -Vector3.up, out hit, groundLayer))
-        {
-            if(!isGrounded && playerManager.isInteracting)
-            {
-                Debug.Log("XD");
-                animatorManager.PlayTargetAnimation("Idle", true);
-            }
-
-            inAirTimer = 0;
-            isGrounded = true;
-        }
-
-        else
-        {
-            isGrounded = false;
-        }
-
-    }
-
 }

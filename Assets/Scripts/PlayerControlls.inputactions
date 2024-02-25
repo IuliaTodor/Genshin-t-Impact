@@ -22,6 +22,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "CameraAxis",
+                    "type": "Value",
+                    "id": "3ee292f1-3fd2-4d47-9bcb-cd9aed331c3a",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -193,11 +202,22 @@
                 {
                     "name": "",
                     "id": "90118cc0-bbcd-4cdd-89e0-c2824592a7e7",
-                    "path": "<Pointer>/delta",
+                    "path": "<Mouse>/delta",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Camera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d39fdd2f-673c-4009-92d9-b21eaf716fed",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CameraAxis",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -217,7 +237,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Aim",
+                    "name": "CameraMode",
                     "type": "Button",
                     "id": "e586168b-ea84-4c4a-beba-5feb4cf7f26c",
                     "expectedControlType": "Button",
@@ -256,7 +276,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Aim",
+                    "action": "CameraMode",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
